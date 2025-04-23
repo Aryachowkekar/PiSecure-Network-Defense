@@ -96,6 +96,42 @@ Use Wireshark to inspect traffic logs and understand network behavior.
 ### 💻 Designed by: Team PiSecure – Atharva College of Engineering
 ### 📍 Use this for homes, small businesses, or even cyber labs!
 
+## 👥 Contributors
+
+Thanks to the amazing people who brought this project to life:
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Aryachowkekar">
+        <img src="https://avatars.githubusercontent.com/Aryachowkekar" width="100px;" alt="Arya Chowkekar"/><br />
+        <sub><b>Arya Chowkekar</b></sub>
+      </a>
+      <br /><sup>Project Lead & Developer</sup>
+    </td>
+    <td align="center">
+      <a href="https://github.com/SakshiAghav">
+        <img src="https://avatars.githubusercontent.com/SakshiAghav" width="100px;" alt="Sakshi Aghav"/><br />
+        <sub><b>Sakshi Aghav</b></sub>
+      </a>
+      <br /><sup>Research & Documentation</sup>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Aaryan-06">
+        <img src="https://avatars.githubusercontent.com/Aaryan-06" width="100px;" alt="Aaryan Gorana"/><br />
+        <sub><b>Aaryan Gorana</b></sub>
+      </a>
+      <br /><sup>UI & Testing</sup>
+    </td>
+    <td align="center">
+      <a href="https://github.com/vishalji123">
+        <img src="https://avatars.githubusercontent.com/vishalji123" width="100px;" alt="Vishal Gupta"/><br />
+        <sub><b>Vishal Gupta</b></sub>
+      </a>
+      <br /><sup>Integration & Debugging</sup>
+    </td>
+  </tr>
+</table>
 
 
 
