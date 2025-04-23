@@ -39,7 +39,7 @@ Then open your browser and visit:
 ```
 http://<raspberry-pi-ip>:5000
 ```
-![Image ALT] ()
+![Image ALT] (https://github.com/Aryachowkekar/PiSecure-Network-Defense/blob/main/IPS.png)
 ## 🛡️ 5. Intrusion Prevention System
 ```bash
 sudo python3 ips.py
