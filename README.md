@@ -107,28 +107,28 @@ Thanks to the amazing people who brought this project to life:
         <img src="https://avatars.githubusercontent.com/Aryachowkekar" width="100px;" alt="Arya Chowkekar"/><br />
         <sub><b>Arya Chowkekar</b></sub>
       </a>
-      <br /><sup>Project Lead & Developer</sup>
+      <br /><sup>IDS/IPS, Penetration Testing</sup>
     </td>
     <td align="center">
       <a href="https://github.com/SakshiAghav">
         <img src="https://avatars.githubusercontent.com/SakshiAghav" width="100px;" alt="Sakshi Aghav"/><br />
         <sub><b>Sakshi Aghav</b></sub>
       </a>
-      <br /><sup>Research & Documentation</sup>
+      <br /><sup>Frontend, Ad-Blocker</sup>
     </td>
     <td align="center">
       <a href="https://github.com/Aaryan-06">
         <img src="https://avatars.githubusercontent.com/Aaryan-06" width="100px;" alt="Aaryan Gorana"/><br />
         <sub><b>Aaryan Gorana</b></sub>
       </a>
-      <br /><sup>UI & Testing</sup>
+      <br /><sup>Firewall Rules, Pi Configuration</sup>
     </td>
     <td align="center">
       <a href="https://github.com/vishalji123">
         <img src="https://avatars.githubusercontent.com/vishalji123" width="100px;" alt="Vishal Gupta"/><br />
         <sub><b>Vishal Gupta</b></sub>
       </a>
-      <br /><sup>Integration & Debugging</sup>
+      <br /><sup>Ad-Blocker</sup>
     </td>
   </tr>
 </table>
