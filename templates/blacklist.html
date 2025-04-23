@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blacklist / Malware Protection</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f2dede;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      background-color: #009bb3;
+      color: black;
+      text-align: center;
+      padding: 20px;
+      font-size: 2rem;
+      font-weight: bold;
+      border-radius: 0 0 25px 25px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      padding: 0 10px;
+    }
+
+    .section {
+      background-color: #fff;
+      border-radius: 15px;
+      padding: 20px 30px;
+      margin: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      font-size: 1.1rem;
+      margin: 8px 0;
+      color: #333;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      accent-color: #009bb3;
+      border-radius: 5px;
+      transition: 0.2s ease-in-out;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    .btn {
+      background-color: #009bb3;
+      color: black;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      margin: 10px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #007d90;
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .link-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .link-input {
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 20px;
+      width: 280px;
+      border: 2px solid #009bb3;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1rem;
+    }
+
+    .footer a {
+      color: #007d90;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .file-missing {
+      opacity: 0.6;
+    }
+
+    .file-missing::after {
+      content: " (file missing)";
+      color: #ff0000;
+      font-size: 0.8em;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .link-row {
+        flex-direction: column;
+      }
+
+      .link-input {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Black List / Malware protection</h1>
+
+  <div class="container">
+    <div class="section">
+      <h2>Suspicious Lists</h2>
+      <label><input type="checkbox" id="polish">PolishFiltersTeam.txt</label>
+      <label><input type="checkbox" id="fademind">FadeMind.txt</label>
+      <label><input type="checkbox" id="static">Static.txt</label>
+    </div>
+
+    <div class="section">
+      <h2>Advertising Lists</h2>
+      <label><input type="checkbox" id="adaway">adaway.txt</label>
+      <label><input type="checkbox" id="adguarddns">AdguardDNS.txt</label>
+      <label><input type="checkbox" id="admiral">Admiral.txt</label>
+      <label><input type="checkbox" id="adservers">adservers.txt</label>
+      <label><input type="checkbox" id="easylist">Easylist.txt</label>
+      <label><input type="checkbox" id="pglyoyo">pgl.yoyo.txt</label>
+    </div>
+
+    <div class="section">
+      <h2>Tracking & Telemetry Lists</h2>
+      <label><input type="checkbox" id="easyprivacy">Easyprivacy.txt</label>
+      <label><input type="checkbox" id="prigent">Prigent-Ads.txt</label>
+      <label><input type="checkbox" id="spy">spy.txt</label>
+      <label><input type="checkbox" id="firstparty">firstparty-trackers-hosts.txt</label>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="applySelections()">Apply changes</button>
+
+    <div class="link-row">
+      <input class="link-input" type="text" placeholder="Paste Link" id="customLink"/>
+      <button class="btn" onclick="applyLink()">Add Domain's</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    You Can Get More Links From 
+    <a href="https://firebog.net/" target="_blank">(https://firebog.net/)</a>
+  </div>
+
+  <script>
+    // Load available lists when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/blacklist/lists')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update checkboxes based on available lists
+                    Object.entries(data.available_lists).forEach(([listId, exists]) => {
+                        const checkbox = document.getElementById(listId);
+                        const label = checkbox ? checkbox.parentElement : null;
+                        
+                        if (checkbox && label) {
+                            checkbox.disabled = !exists;
+                            if (!exists) {
+                                label.classList.add('file-missing');
+                                checkbox.title = 'Blacklist file not found';
+                            } else {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading lists:', error);
+                alert('Error checking available blacklists: ' + error.message);
+            });
+    });
+
+    function applySelections() {
+        const checkboxes = document.querySelectorAll("input[type='checkbox']:not(:disabled)");
+        const selected = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.id);
+
+        if (selected.length === 0) {
+            alert("Please select at least one available list to apply");
+            return;
+        }
+
+        const applyBtn = document.querySelector('.btn[onclick="applySelections()"]');
+        applyBtn.disabled = true;
+        applyBtn.textContent = "Applying...";
+
+        fetch('/blacklist/apply', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ selected: selected }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            let message = data.message;
+            if (data.missing_files && data.missing_files.length > 0) {
+                message += `\n\nMissing files: ${data.missing_files.join(', ')}`;
+            }
+            
+            if (data.status === 'success') {
+                alert(`✅ Success!\n${message}`);
+            } else if (data.status === 'partial') {
+                alert(`⚠️ Partial Success\n${message}`);
+            } else {
+                alert(`❌ Error\n${message}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            let errorMessage = error.message || 'Unknown error occurred';
+            if (error.details) {
+                errorMessage += `\n\nDetails: ${error.details}`;
+            }
+            alert(`Error applying blacklists:\n${errorMessage}`);
+        })
+        .finally(() => {
+            applyBtn.disabled = false;
+            applyBtn.textContent = "Apply changes";
+        });
+    }
+
+    function applyLink() {
+        const link = document.getElementById("customLink").value.trim();
+        if (link === "") {
+            alert("Please paste a link first.");
+            return;
+        }
+
+        const addBtn = document.querySelector('.btn[onclick="applyLink()"]');
+        addBtn.disabled = true;
+        addBtn.textContent = "Adding...";
+
+        fetch('/blacklist/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: link }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`✅ Success!\n${data.message}`);
+                document.getElementById("customLink").value = "";
+                // Refresh the page to update list status
+                window.location.reload();
+            } else if (data.status === 'partial') {
+                alert(`⚠️ Partial Success\n${data.message}`);
+                document.getElementById("customLink").value = "";
+            } else {
+                alert(`❌ Error\n${data.message}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(`Error adding custom list:\n${error.message}`);
+        })
+        .finally(() => {
+            addBtn.disabled = false;
+            addBtn.textContent = "Add Domain's";
+        });
+    }
+  </script>
+</body>
+</html>

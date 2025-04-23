@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi-Secure Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- model-viewer CDN -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <h2>PI-SECURE</h2>
+            <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Pi-Secure Logo" class="sidebar-logo">
+
+            <!-- System Status -->
+            <div class="system-status">
+                <p><strong>Status:</strong> <span id="systemStatus">Loading...</span></p>
+                <p><strong>CPU Usage:</strong> <span id="cpuUsage">Loading...</span></p>
+                <p><strong>CPU Temp:</strong> <span id="cpuTemp">Loading...</span></p>
+                <p><strong>Memory Usage:</strong> <span id="memoryUsage">Loading...</span></p>
+                <p><strong>Load Average:</strong> <span id="loadAvg">Loading...</span></p>
+            </div>
+
+            <ul>
+                <li><b>FEATURES</b></li>
+                <li><a href="{{ url_for('intrusion_detection') }}">Intrusion Detection/Prevention</a></li>
+                <li><a href="{{ url_for('netguard_directives') }}">NetGuard Directives</a></li>
+                <li><a href="{{ url_for('ad_blocker') }}">Ad-Blocker</a></li>
+                <li><b>CONFIGURATION</b></li>
+                <li><a href="{{ url_for('blacklist') }}">Blacklist</a></li>
+                <li><a href="{{ url_for('setting') }}">Setting</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+
+        <button class="toggle-btn" id="toggleButton">☰</button>
+        <script>
+            document.getElementById("toggleButton").addEventListener("click", function () {
+                var sidebar = document.getElementById("sidebar");
+                var mainContent = document.querySelector(".main-content");
+        
+                sidebar.classList.toggle("hidden");
+                mainContent.classList.toggle("full-width");
+            });
+        </script>
+        
+
+
+        
+            <div class="main-content">
+                <header class="dashboard-header">
+                    <div class="dashboard-left">
+                        <h1>DASHBOARD</h1>
+                    </div>
+                    <div class="dashboard-right">
+                        <p class="hostname">hostname: archit@pi</p>
+                    </div>
+                </header>
+            
+                <!-- Combined Welcome + 3D Section -->
+                <div class="welcome-container">
+                    <div class="welcome-banner">
+                        <h2>Welcome to <span>Pi-Secure</span></h2>
+                        <p>Protecting your network with advanced security.</p>
+                        <a href="#" class="get-started-btn">Get Started</a>
+                    </div>
+            
+                    <div class="model-container">
+                        <model-viewer src="{{ url_for('static', filename='raspberry_pi_3.glb') }}"
+                            alt="Raspberry Pi 3D Model"
+                            auto-rotate
+                            camera-controls
+                            style="width: 300px; height: 300px; background-color: transparent;">
+                        </model-viewer>
+                    </div>
+                </div>
+            
+                <!-- About Us Section -->
+                <!-- About Us Section -->
+<div class="about-us">
+    <h2>About Us</h2>
+    <p>
+        Our Integrated Security Firewall provides network protection for homes and small businesses using a Raspberry Pi.
+        It combines firewall rules, DNS-based ad blocking, and an Intrusion Detection System (IDS) into one solution.
+        The web dashboard offers real-time monitoring and easy management. It detects threats like DoS, MITM,
+        ARP spoofing, and reconnaissance attacks, ensuring a secure and controlled network.
+    </p>
+</div>
+
+<div class="dropdown-section">
+    <div class="dropdown-item">
+        <button onclick="toggleDropdown('intro')">
+            Introduction <span class="arrow" id="arrow-intro">▼</span>
+        </button>
+        <div id="intro" class="dropdown-content">
+            <p>
+             This Raspberry Pi-based hardware firewall is a cost-effective and scalable solution that secures networks by filtering traffic at the gateway level. It integrates multiple security features, including Intrusion Detection Systems (IDS) like Snort or Suricata, deep packet inspection, and customizable firewall rules to detect and mitigate threats such as DoS/DDoS attacks. A Flask-based web dashboard enables real-time traffic monitoring, threat alerts, and policy management. Leveraging tools like PyShark and Pandas, the system offers detailed network insights, and supports additional features like ad-blocking, VPN, and content filtering, making it ideal for home and small business use.
+
+
+
+           </p>
+        </div>
+    </div>
+
+    <div class="dropdown-item">
+        <button onclick="toggleDropdown('problem')">
+            Problem Statement <span class="arrow" id="arrow-problem">▼</span>
+        </button>
+        <div id="problem" class="dropdown-content">
+            <p>With increasing cyber threats like unauthorized access, malware, and DoS attacks, existing firewalls and ad-blockers lack integration for home and small business networks. This project develops a Raspberry Pi-based firewall combining DNS ad-blocking, customizable traffic filtering, IDS capabilities, and real-time monitoring. A Web Server ensures easy configuration and management.</p>
+        </div>
+    </div>
+
+    <div class="dropdown-item">
+        <button onclick="toggleDropdown('application')">
+            Application <span class="arrow" id="arrow-application">▼</span>
+        </button>
+        <div id="application" class="dropdown-content">
+            <p>This Raspberry Pi-based firewall system has a wide range of applications, particularly in environments where cost-effective, efficient, and customizable network security is essential. It is ideal for home networks to protect family members from harmful websites and intrusive ads, while also defending against cyber threats. In small businesses, it helps secure sensitive data, prevent unauthorized access, and monitor employee internet usage. Educational institutions can use it to manage and filter network traffic, ensuring safe and focused internet use among students. Additionally, it serves as a valuable tool for cybersecurity research and training, allowing users to study traffic behavior, implement firewall rules, and understand intrusion detection mechanisms in real-world scenarios—all through a compact, scalable, and easy-to-deploy solution.</p>
+        </div>
+    </div>
+
+    <div class="our-team-section">
+        <h2>Our Team</h2>
+        <p>We are a team of passionate engineers and developers dedicated to building open-source, secure solutions for everyday users.</p>
+    
+        <div class="team-container">
+            <!-- Team Member Card 1 -->
+            <!-- Add this in the <head> section to load Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="team-card">
+    <img src="{{ url_for('static', filename='Sakshi.jpeg') }}" alt="Sakshi Aghav">
+
+    <h3>Sakshi Aghav</h3>
+    <p><em>Frontend, Ad-Blocker</em></p>
+    <div class="social-icons">
+        <a href="https://github.com/SakshiAghav" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.instagram.com/sakshi_aghav_2209?igsh=MTMzMmFma2c4NWJwdw==" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/in/sakshi-aghav?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+    </div>
+</div>
+
+<!-- Optional CSS for styling -->
+<style>
+    .social-icons a {
+        font-size: 24px;  /* Adjust icon size */
+        margin: 5px;      /* Space between icons */
+        color: #333;      /* Default color */
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+        color: #007bff;  /* Change color on hover */
+    }
+</style>
+
+            
+    
+            <!-- Team Member Card 2 -->
+            <div class="team-card">
+                <img src="{{ url_for('static', filename='aaryan.jpeg') }}" alt="">
+
+                <h3>Aaryan Gorana</h3>
+                <p><em>Firewall Rules, Pi Configuration</em></p>
+                <div class="social-icons">
+                    
+                    <a href="https://github.com/Aaryan-06"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/_aaryan_1206?igsh=MWI2cGQ0Y2J6MTZibQ=="><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/aaryan-gorana-635480221?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+    
+            <!-- Team Member Card 3 -->
+            <div class="team-card">
+                <img src="{{ url_for('static', filename='Vishal.jpeg') }}" alt="">
+
+                <h3>Vishal Gupta</h3>
+                <p><em>Ad-Blocker</em></p>
+                <div class="social-icons">
+                  
+                    <a href="https://github.com/vishalji123"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/vishal_jaiswal12336?igsh=Yml2anA0cGRydzJl"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/vishal-gupta-a06453290"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+    
+            <!-- Team Member Card 4 -->
+            <div class="team-card">
+                <img src="{{ url_for('static', filename='arya.jpeg') }}" alt="">
+
+                <h3>Arya Chowkekar</h3>
+                <p><em>IDS/IPS, Penetration Testing</em></p>
+                <div class="social-icons">
+                    
+                    <a href="https://github.com/Aryachowkekar"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/notyourrarya?igsh=ajlvNXRsd2V4d3g5 "><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/arya-chowkekar-145882252?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .main-content {
+            padding-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .main-content.full-width {
+            margin-left: 0 !important;
+            width: 100% !important;
+        }
+
+
+        header {
+            position: relative;
+            top: -10px;
+            background-color: #0054c2;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(250, 248, 248, 0.979);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .hostname {
+            font-size: 14px;
+            color: #f7f2f2;
+        }
+
+        .welcome-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0054c2;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(250, 248, 248, 0.993);
+            gap: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-banner {
+            flex: 1;
+            min-width: 250px;
+            color: white;
+        }
+
+        .welcome-banner h2 {
+            font-size: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 1px;
+            color: #f8f5e1;
+        }
+
+        .welcome-banner h2 span {
+            display: block;
+            font-size: 55px;
+            color: #ffffff;
+        }
+
+        .welcome-banner p {
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .get-started-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background-color: #FFD700;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .get-started-btn:hover {
+            background-color: #FFC107;
+            transform: scale(1.05);
+        }
+
+        .model-container {
+            flex: 0 0 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 10px;
+        }
+           
+        .about-us {
+    margin-top: 30px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.about-us h2 {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: #0054c2;
+    text-align: left;
+}
+
+.about-us p {
+    font-size: 17px;
+    line-height: 1.8;
+    font-weight: 500;
+    text-align: justify;
+
+}
+
+.dropdown-section {
+    margin-top: 30px;
+}
+
+.dropdown-item {
+    margin-bottom: 15px;
+    text-align: left;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dropdown-item button {
+    width: 100%;
+    background-color: #4a00e0;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item button:hover {
+    background-color: #3700b3;
+}
+
+.dropdown-content {
+    display: none;
+    padding: 15px 20px;
+    background-color: #f3f3f3;
+    border-left: 5px solid #4a00e0;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+.arrow {
+    float: right;
+    transition: transform 0.3s ease;
+}
+.our-team-section {
+    padding: 40px;
+    text-align: center;
+}
+
+.our-team-section h2 {
+    font-size: 2rem;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.our-team-section p {
+    text-align: left;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.team-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 220px;
+    transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.team-card h3 {
+    margin: 10px 0 5px;
+    font-size: 1.2rem;
+}
+
+.team-card p {
+    margin: 0 0 10px;
+    font-style: italic;
+    color: #555;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.social-icons a {
+    margin: 0 6px;
+    font-size: 1.2rem;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #6c63ff;
+}
+
+
+/* Responsive layout when sidebar is hidden */
+        .sidebar.hidden {
+            display: none;
+        }
+
+       
+
+        .sidebar.hidden + .main-content .welcome-container {
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .sidebar.hidden + .main-content .model-container {
+            margin-top: 20px;
+        }
+        
+    </style>
+
+    <script>
+        function fetchStats() {
+            fetch("{{ url_for('stats') }}")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("systemStatus").innerHTML = "ACTIVE ✅";
+                    document.getElementById("cpuUsage").innerText = data.cpu_usage + "%";
+                    document.getElementById("cpuTemp").innerText = data.cpu_temp + "°C";
+                    document.getElementById("memoryUsage").innerText = data.memory_usage + "%";
+                    const loadAvg = data.load_avg;
+                    document.getElementById("loadAvg").innerText =
+                        `${loadAvg[0].toFixed(2)}, ${loadAvg[1].toFixed(2)}, ${loadAvg[2].toFixed(2)}`;
+                })
+                .catch(error => {
+                    console.error("Error fetching system stats:", error);
+                    document.getElementById("systemStatus").innerHTML = "INACTIVE ❌";
+                });
+        }
+
+        setInterval(fetchStats, 5000);
+        fetchStats();
+
+        
+    </script>
+    <script>
+        function toggleDropdown(id) {
+            const content = document.getElementById(id);
+            const arrow = document.getElementById(`arrow-${id}`);
+            const allDropdowns = document.querySelectorAll('.dropdown-content');
+            const allArrows = document.querySelectorAll('.arrow');
+        
+            allDropdowns.forEach((drop, i) => {
+                if (drop !== content) {
+                    drop.style.display = 'none';
+                }
+            });
+        
+            allArrows.forEach((arr) => {
+                if (arr !== arrow) {
+                    arr.textContent = '▼';
+                }
+            });
+        
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                arrow.textContent = '▼';
+            } else {
+                content.style.display = 'block';
+                arrow.textContent = '▲';
+            }
+        }
+        
+        </script>
+        
+        <script>
+            function toggleTeam() {
+                const container = document.getElementById('team-container');
+                const arrow = document.getElementById('arrow');
+                if (container.style.display === "none") {
+                    container.style.display = "flex";
+                    arrow.innerHTML = "&#9650;"; // up arrow
+                } else {
+                    container.style.display = "none";
+                    arrow.innerHTML = "&#9660;"; // down arrow
+                }
+            }
+            </script>
+            
+            
+</body>
+</html>

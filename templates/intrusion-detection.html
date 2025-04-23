@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration IDS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="ids-container">
+        <h1>Configuration IDS</h1>
+
+        <div class="nav-links">
+            <a href="#" class="active">Configuration IDS</a>
+            <a href="{{ url_for('monitor_ids') }}">Monitor IDS</a>
+        </div>
+
+        <div class="ids-section">
+            <h2>Attack Configuration</h2>
+            <ul class="attack-list">
+                <li>Bruteforce</li>
+                <li>DOS/DDOS</li>
+            </ul>
+        </div>
+
+        <!-- DOS/DDOS Configuration -->
+        <div class="ids-section">
+            <h3>DOS/DDOS Attack Configuration</h3>
+            <div class="option-group">
+                <label style="color: white;">
+                    <input type="radio" name="dos_option" value="custom" onclick="toggleInput('custom')"> Custom
+                </label>
+                <label style="color: white;">
+                    <input type="radio" name="dos_option" value="logfile" onclick="toggleInput('logfile')"> Log File
+                </label>
+                <label style="color: white;">
+                    <input type="radio" name="dos_option" value="selflearn" onclick="toggleInput('selflearn')"> Self-Learn
+                </label>
+            </div>
+
+            <div id="custom-input" class="dynamic-input">
+                <input type="text" id="dos-threshold" placeholder="Enter custom threshold (e.g., 500/1000)">
+                <small class="hint">Format: &lt;DoS threshold&gt;/&lt;DDoS threshold&gt; (e.g., 500/1000).</small>
+            </div>
+            <div id="logfile-input" class="dynamic-input">
+                <input type="file" id="log-file">
+                <small class="hint">Upload a log file for analysis.</small>
+            </div>
+        </div>
+
+        <button class="save-button" onclick="startIDS()">Start IDS</button>
+    </div>
+
+    <script>
+        function toggleInput(option) {
+            document.getElementById('custom-input').style.display = 'none';
+            document.getElementById('logfile-input').style.display = 'none';
+
+            if (option === 'custom') {
+                document.getElementById('custom-input').style.display = 'block';
+            } else if (option === 'logfile') {
+                document.getElementById('logfile-input').style.display = 'block';
+            }
+        }
+
+        function validateInputs() {
+            const dosOptionElement = document.querySelector('input[name="dos_option"]:checked');
+            let dosOption = dosOptionElement ? dosOptionElement.value : "";
+            let dosThreshold = document.getElementById('dos-threshold').value || "500/1000"; // Default value
+            let logFile = document.getElementById('log-file').files[0];
+
+            // Validate DOS/DDOS Option
+            if (!dosOption) {
+                alert("Please select a DOS/DDOS option.");
+                return false;
+            }
+
+            // Validate Custom Threshold
+            if (dosOption === 'custom' && !dosThreshold.match(/^\d+\/\d+$/)) {
+                alert("Invalid custom threshold format. Use <DoS threshold>/<DDoS threshold> (e.g., 500/1000).");
+                return false;
+            }
+
+            // Validate Log File
+            if (dosOption === 'logfile' && !logFile) {
+                alert("Please upload a log file.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function startIDS() {
+            if (!validateInputs()) {
+                return; // Stop if validation fails
+            }
+
+            const dosOptionElement = document.querySelector('input[name="dos_option"]:checked');
+            let dosOption = dosOptionElement ? dosOptionElement.value : "";
+            let dosThreshold = document.getElementById('dos-threshold').value || "500/1000"; // Default value
+            let logFile = document.getElementById('log-file').files[0];
+
+            // Prepare form data
+            let formData = new FormData();
+            formData.append("dos_ddos_option", dosOption);
+            formData.append("dos_threshold", dosThreshold);
+            if (logFile) {
+                formData.append("log_file", logFile);
+            }
+
+            fetch('/start_ids', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json()) // Parse response as JSON
+            .then(data => {
+                console.log("Response:", data);
+                if (data.message) {
+                    alert(data.message); // Show success message
+                } else {
+                    alert("Failed to start IDS: " + JSON.stringify(data)); // Show error message
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to start IDS");
+            });
+        }
+    </script>
+</body>
+</html>

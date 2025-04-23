@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #2193b0, #6dd5ed);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background-color: #00a2ff;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            min-width: 150px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .bar-chart {
+            width: 90%;
+            height: 300px;
+            margin: auto;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .chart {
+            width: 400px !important;
+            height: 400px !important;
+            max-width: 500px;
+            margin: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var totalQueries = 1576;
+        var queriesBlocked = 356;
+        var domainBlocklist = 99337;
+        var blockedDomains = Math.round(domainBlocklist * 0.40);
+        var safeDomains = domainBlocklist - blockedDomains;
+        var barChart, pieChart1, pieChart2;
+        var currentBarIndex = 0; // Track which bar we're updating
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function updateStats() {
+            totalQueries += Math.floor(Math.random() * 50) + 20;  
+            queriesBlocked += Math.floor(Math.random() * 10) + 5; 
+            var percentageBlocked = ((queriesBlocked / totalQueries) * 100).toFixed(1);
+            
+            domainBlocklist += Math.floor(Math.random() * 30) + 10; 
+            blockedDomains = Math.round(domainBlocklist * 0.40);
+            safeDomains = domainBlocklist - blockedDomains;
+
+            document.getElementById("totalQueries").innerHTML = `Total Queries (Filter)<br><strong>${totalQueries}</strong>`;
+            document.getElementById("queriesBlocked").innerHTML = `Queries Blocked<br><strong>${queriesBlocked}</strong>`;
+            document.getElementById("percentageBlocked").innerHTML = `Percentage Blocked<br><strong>${percentageBlocked}%</strong>`;
+            document.getElementById("domainBlocklist").innerHTML = `Domain Blocklist<br><strong>${domainBlocklist}</strong>`;
+
+            // Update only the current bar index
+            var newBarData = [...barChart.data.datasets[0].data];
+            newBarData[currentBarIndex] = Math.floor(totalQueries * (Math.random() * 0.1 + 0.9));
+            
+            // Move to the next bar for the next update
+            currentBarIndex = (currentBarIndex + 1) % newBarData.length;
+            
+            barChart.data.datasets[0].data = newBarData;
+            barChart.update();
+
+            var totalBarQueries = newBarData.reduce((a, b) => a + b, 0);
+            var allowedQueries = totalBarQueries - queriesBlocked;
+
+            pieChart1.data.datasets[0].data = [allowedQueries, queriesBlocked]; 
+            pieChart1.data.datasets[0].backgroundColor = [getRandomColor(), getRandomColor()]; 
+            pieChart1.update();
+
+            pieChart2.data.datasets[0].data = [safeDomains, blockedDomains]; 
+            pieChart2.data.datasets[0].backgroundColor = [getRandomColor(), getRandomColor()]; 
+            pieChart2.update();
+        }
+
+        window.onload = function() {
+            var ctxBar = document.getElementById('barChart').getContext('2d');
+            barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['12AM', '3AM', '6AM', '9AM', '12PM', '3PM', '6PM', '9PM'],
+                    datasets: [{
+                        label: 'Total Queries Over 24 Hours',
+                        data: [50, 100, 150, 200, 250, 300, 350, 400],
+                        backgroundColor: 'rgba(0, 162, 255, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            barPercentage: 1.0, 
+                            categoryPercentage: 1.0
+                        },
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            var ctxPie1 = document.getElementById('pieChart1').getContext('2d');
+            pieChart1 = new Chart(ctxPie1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Allowed', 'Blocked'],
+                    datasets: [{
+                        data: [totalQueries - queriesBlocked, queriesBlocked],
+                        backgroundColor: [getRandomColor(), getRandomColor()], 
+                        borderColor: '#fff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            var ctxPie2 = document.getElementById('pieChart2').getContext('2d');
+            pieChart2 = new Chart(ctxPie2, {
+                type: 'pie',
+                data: {
+                    labels: ['Safe Domains', 'Blocked Domains'],
+                    datasets: [{
+                        data: [safeDomains, blockedDomains],
+                        backgroundColor: [getRandomColor(), getRandomColor()], 
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            setInterval(updateStats, 15000);
+        }
+    </script>
+</head>
+<body>
+    <div class="topbar">Dashboard</div>
+    
+    <div class="stats">
+        <div class="card" id="totalQueries">Total Queries (Filter)<br><strong>1576</strong></div>
+        <div class="card" id="queriesBlocked">Queries Blocked<br><strong>356</strong></div>
+        <div class="card" id="percentageBlocked">Percentage Blocked<br><strong>6.7%</strong></div>
+        <div class="card" id="domainBlocklist">Domain Blocklist<br><strong>99337</strong></div>
+    </div>
+    
+    <div class="bar-chart">
+        <canvas id="barChart"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <canvas id="pieChart1" class="chart"></canvas>
+        <canvas id="pieChart2" class="chart"></canvas>
+    </div>
+</body>
+</html>

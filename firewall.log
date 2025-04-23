@@ -1,0 +1,59 @@
+2025-04-10 12:36:18,243 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-04-10 12:36:18,244 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-10 12:36:18,255 - INFO -  * Restarting with stat
+2025-04-10 12:36:22,013 - WARNING -  * Debugger is active!
+2025-04-10 12:36:22,015 - INFO -  * Debugger PIN: 110-458-582
+2025-04-10 12:36:45,369 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:45] "GET / HTTP/1.1" 200 -
+2025-04-10 12:36:45,571 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:45] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-04-10 12:36:45,577 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:45] "[36mGET /static/logo.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:36:45,582 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:45] "[36mGET /static/Sakshi.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:36:45,610 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:45] "[36mGET /static/aaryan.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:36:45,632 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:45] "[36mGET /static/Vishal.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:36:45,638 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:45] "[36mGET /static/arya.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:36:46,081 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:46] "[36mGET /static/raspberry_pi_3.glb HTTP/1.1[0m" 304 -
+2025-04-10 12:36:46,654 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:46] "GET /stats HTTP/1.1" 200 -
+2025-04-10 12:36:49,108 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:49] "GET /netguard-directives HTTP/1.1" 200 -
+2025-04-10 12:36:49,168 - INFO - 192.168.0.105 - - [10/Apr/2025 12:36:49] "GET /list-blocked HTTP/1.1" 200 -
+2025-04-10 12:37:17,330 - WARNING - System DNS failed for tryhackme.com: [Errno -3] Temporary failure in name resolution
+2025-04-10 12:37:17,355 - INFO - Resolved tryhackme.com via Google DNS: ['104.22.55.228', '104.22.54.228', '172.67.27.10']
+2025-04-10 12:37:17,438 - INFO - Added rules for 104.22.55.228
+2025-04-10 12:37:17,484 - INFO - Added rules for 104.22.54.228
+2025-04-10 12:37:17,529 - INFO - Added rules for 172.67.27.10
+2025-04-10 12:37:17,530 - INFO - Successfully blocked tryhackme.com (IPs: 104.22.55.228, 104.22.54.228, 172.67.27.10)
+2025-04-10 12:37:17,536 - INFO - 192.168.0.105 - - [10/Apr/2025 12:37:17] "POST /block-website HTTP/1.1" 200 -
+2025-04-10 12:37:18,555 - INFO - 192.168.0.105 - - [10/Apr/2025 12:37:18] "GET /list-blocked HTTP/1.1" 200 -
+2025-04-10 12:38:10,904 - WARNING - System DNS failed for youtube.com: [Errno -3] Temporary failure in name resolution
+2025-04-10 12:38:10,924 - INFO - Resolved youtube.com via Google DNS: ['142.250.199.142']
+2025-04-10 12:38:10,968 - INFO - Added rules for 142.250.199.142
+2025-04-10 12:38:10,969 - INFO - Successfully blocked youtube.com (IPs: 142.250.199.142)
+2025-04-10 12:38:10,973 - INFO - 192.168.0.105 - - [10/Apr/2025 12:38:10] "POST /block-website HTTP/1.1" 200 -
+2025-04-10 12:38:11,992 - INFO - 192.168.0.105 - - [10/Apr/2025 12:38:11] "GET /list-blocked HTTP/1.1" 200 -
+2025-04-10 12:44:32,360 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-04-10 12:44:32,362 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-10 12:44:32,369 - INFO -  * Restarting with stat
+2025-04-10 12:44:36,308 - WARNING -  * Debugger is active!
+2025-04-10 12:44:36,311 - INFO -  * Debugger PIN: 110-458-582
+2025-04-10 12:44:44,983 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:44] "GET / HTTP/1.1" 200 -
+2025-04-10 12:44:45,710 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:45] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-04-10 12:44:45,744 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:45] "[36mGET /static/logo.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:44:45,765 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:45] "[36mGET /static/Sakshi.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:44:45,816 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:45] "[36mGET /static/aaryan.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:44:45,855 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:45] "[36mGET /static/Vishal.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:44:45,867 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:45] "[36mGET /static/arya.jpeg HTTP/1.1[0m" 304 -
+2025-04-10 12:44:46,855 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:46] "GET /stats HTTP/1.1" 200 -
+2025-04-10 12:44:47,610 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:47] "[36mGET /static/raspberry_pi_3.glb HTTP/1.1[0m" 304 -
+2025-04-10 12:44:51,770 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:51] "GET /stats HTTP/1.1" 200 -
+2025-04-10 12:44:54,736 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:54] "GET /netguard-directives HTTP/1.1" 200 -
+2025-04-10 12:44:54,818 - INFO - 192.168.0.105 - - [10/Apr/2025 12:44:54] "GET /list-blocked HTTP/1.1" 200 -
+2025-04-10 12:46:08,462 - INFO - Resolved tryhackme.com via system DNS: ['104.22.55.228', '104.22.54.228', '172.67.27.10']
+2025-04-10 12:46:08,474 - INFO - Rule already exists for 104.22.55.228
+2025-04-10 12:46:08,485 - INFO - Rule already exists for 104.22.54.228
+2025-04-10 12:46:08,497 - INFO - Rule already exists for 172.67.27.10
+2025-04-10 12:46:08,501 - INFO - 192.168.0.105 - - [10/Apr/2025 12:46:08] "POST /block-website HTTP/1.1" 200 -
+2025-04-10 12:46:09,522 - INFO - 192.168.0.105 - - [10/Apr/2025 12:46:09] "GET /list-blocked HTTP/1.1" 200 -

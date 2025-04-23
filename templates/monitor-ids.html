@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor IDS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .monitor-container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .log-box {
+            background-color: black;
+            color: lime;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: monospace;
+            border-radius: 5px;
+            border: 2px solid lime;
+        }
+        .button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: darkgreen;
+        }
+        .button.red {
+            background-color: red;
+        }
+        .button.red:hover {
+            background-color: darkred;
+        }
+        .log-controls {
+            margin-top: 10px;
+        }
+        .log-entry {
+            margin: 5px 0;
+        }
+        .timestamp {
+            color: #888;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="monitor-container">
+        <h1>Monitor IDS</h1>
+        <div class="log-box" id="logs">
+            No logs detected.
+        </div>
+        <div class="log-controls">
+            <button class="button" onclick="toggleFullScreen()">Full Screen</button>
+            <button class="button red" onclick="clearLogs()">Clear Logs</button>
+            <button class="button" onclick="toggleAutoScroll()">Toggle Auto-Scroll</button>
+            <button class="button" onclick="downloadLogs()">Download Logs</button>
+        </div>
+    </div>
+
+    <script>
+        let autoScroll = true;
+        let eventSource;
+
+        function fetchLogs() {
+            eventSource = new EventSource('/get_logs');
+
+            eventSource.onmessage = function(event) {
+                const logsContainer = document.getElementById('logs');
+                const logElement = document.createElement('div');
+                logElement.className = 'log-entry';
+
+                // Add timestamp
+                const timestamp = document.createElement('span');
+                timestamp.className = 'timestamp';
+                timestamp.textContent = new Date().toLocaleTimeString();
+                logElement.appendChild(timestamp);
+
+                // Add log message
+                const logMessage = document.createElement('span');
+                logMessage.textContent = event.data.replace('data: ', '');
+                logElement.appendChild(logMessage);
+
+                logsContainer.appendChild(logElement);
+
+                // Remove oldest logs if the container is full
+                if (logsContainer.children.length > 100) {
+                    logsContainer.removeChild(logsContainer.firstChild);
+                }
+
+                // Auto-scroll to the bottom
+                if (autoScroll) {
+                    logsContainer.scrollTop = logsContainer.scrollHeight;
+                }
+            };
+
+            eventSource.onerror = function() {
+                eventSource.close();
+                const logsContainer = document.getElementById('logs');
+                const errorElement = document.createElement('div');
+                errorElement.className = 'log-entry';
+                errorElement.innerHTML = '<span class="timestamp">' + new Date().toLocaleTimeString() + '</span> ⚠️ Connection lost. Reconnecting...';
+                logsContainer.appendChild(errorElement);
+
+                setTimeout(fetchLogs, 5000); // Retry after 5 seconds
+            };
+        }
+
+        function toggleFullScreen() {
+            const logBox = document.querySelector('.log-box');
+            if (!document.fullscreenElement) {
+                logBox.requestFullscreen().catch(err => {
+                    console.error("Error attempting to enable full-screen mode:", err);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = 'No logs detected.';
+        }
+
+        function toggleAutoScroll() {
+            autoScroll = !autoScroll;
+            alert("Auto-scroll " + (autoScroll ? "enabled" : "disabled"));
+        }
+
+        function downloadLogs() {
+            // Fetch the log file from the server
+            fetch('/download_logs')
+                .then(response => response.blob())
+                .then(blob => {
+                    // Create a temporary link element
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'intrusion_log.txt'; // Set the file name
+                    link.click(); // Trigger the download
+                    URL.revokeObjectURL(link.href); // Clean up
+                })
+                .catch(error => {
+                    console.error("Error downloading logs:", error);
+                    alert("Failed to download logs");
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchLogs);
+    </script>
+
+</body>
+</html>

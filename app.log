@@ -1,0 +1,17 @@
+2025-03-29 09:40:23,735 - INFO - Starting ids-backend.py...
+2025-03-29 09:40:23,746 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.104:5000
+2025-03-29 09:40:23,746 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-29 09:40:23,746 - INFO -  * Restarting with stat
+2025-03-29 09:40:23,975 - INFO - Starting ids-backend.py...
+2025-03-29 09:40:23,984 - WARNING -  * Debugger is active!
+2025-03-29 09:40:23,984 - INFO -  * Debugger PIN: 137-547-275
+2025-03-29 09:40:43,039 - INFO - 192.168.0.106 - - [29/Mar/2025 09:40:43] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-29 09:40:43,055 - INFO - 192.168.0.106 - - [29/Mar/2025 09:40:43] "GET /login HTTP/1.1" 200 -
+2025-03-29 09:40:43,126 - INFO - 192.168.0.106 - - [29/Mar/2025 09:40:43] "[36mGET /static/login.png HTTP/1.1[0m" 304 -
+2025-03-29 09:40:48,728 - ERROR - Password file error: Invalid password hash format
+2025-03-29 09:40:48,729 - ERROR - No valid password hash found
+2025-03-29 09:40:48,732 - INFO - 192.168.0.106 - - [29/Mar/2025 09:40:48] "POST /login HTTP/1.1" 200 -
+2025-03-29 09:40:48,760 - INFO - 192.168.0.106 - - [29/Mar/2025 09:40:48] "[36mGET /static/login.png HTTP/1.1[0m" 304 -

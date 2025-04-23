@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0077b6, #00a8e8);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            width: 90%;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            width: 90%;
+            margin: 20px 0;
+        }
+        input {
+            padding: 15px;
+            border-radius: 30px;
+            border: none;
+            font-size: 18px;
+            text-align: center;
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 60%;
+        }
+        .block-btn {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .block-btn:hover {
+            background-color: #cc0000;
+            transform: scale(1.05);
+        }
+        .table-container {
+            width: 90%;
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 18px;
+        }
+        th {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        tr:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .unblock-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .unblock-btn:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Firewall Dashboard</div>
+    <div class="input-container">
+        <input id="website-input" type="text" placeholder="Enter the website to block">
+        <button class="block-btn" onclick="blockWebsite()">Block</button>
+    </div>
+    <div class="table-container">
+        <table id="blocked-websites-table">
+            <tr>
+                <th>Sr.No</th>
+                <th>Website Blocked</th>
+                <th>Status</th>
+                <th>Action Centre</th>
+            </tr>
+            <!-- Rows will be dynamically added here -->
+        </table>
+    </div>
+
+    <script>
+        let blockedWebsites = [];
+
+        function blockWebsite() {
+            const website = document.getElementById('website-input').value.trim();
+
+            if (!website) {
+                alert("Please enter a website to block.");
+                return;
+            }
+
+            // Add to the blocked websites list
+            blockedWebsites.push({ website });
+
+            // Update the table
+            updateTable();
+
+            // Clear the input
+            document.getElementById('website-input').value = '';
+
+            // Send the data to the server
+            fetch('/block-website', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ website }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Website blocked successfully:', website);
+                } else {
+                    console.error('Failed to block website:', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function updateTable() {
+            const table = document.getElementById('blocked-websites-table');
+            // Clear existing rows except the header
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            // Add new rows
+            blockedWebsites.forEach((entry, index) => {
+                const row = table.insertRow();
+                row.insertCell().textContent = index + 1;
+                row.insertCell().textContent = entry.website;
+                row.insertCell().innerHTML = '<strong style="color: red;">Blocked</strong>';
+                row.insertCell().innerHTML = `<button class="unblock-btn" onclick="unblockWebsite('${entry.website}')">Unblock</button>`;
+            });
+        }
+
+        function unblockWebsite(website) {
+            // Remove from the blocked websites list
+            blockedWebsites = blockedWebsites.filter(entry => entry.website !== website);
+
+            // Update the table
+            updateTable();
+
+            // Send the data to the server
+            fetch('/unblock-website', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ website }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Website unblocked successfully:', website);
+                } else {
+                    console.error('Failed to unblock website:', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
